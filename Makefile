@@ -14,7 +14,7 @@ stop:
 			docker stop $(shell docker ps -q --filter ancestor=${DOCKER_USERNAME}/${APPLICATION_NAME} )
 
 dev:
-			docker-compose up --build
+			docker-compose up --build app
 
 start:
 			docker-compose up --build -d
