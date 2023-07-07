@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
+import { SampleStudentComponent } from './components/SampleStudentComponent';
 import './App.css';
 
 function App() {
@@ -9,6 +10,9 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save dadasdoooto reload.
+        </p>
+        <p>
+          <SampleStudentComponent />
         </p>
         <a
           className="App-link"
