@@ -17,7 +17,7 @@ export function SampleStudentComponent() {
     <div>
       {data.map((student) => (
         <p key={student.id}>
-          {student.name} - {student.email}
+          {student.name} - {student.email} - {student.phone}
         </p>
       ))}
     </div>
