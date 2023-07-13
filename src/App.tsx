@@ -9,11 +9,18 @@ import LoginPage from './pages/LoginPage';
 import ProfileComponent from './components/users/ProfileComponent';
 import { getCurrentUser, logout } from './providers/AuthProvider';
 import { UserContext } from './contexts/UserContext';
+import SearchBar from './components/utils/SearchBar';
+import SearchResultComponent from './components/search/SearchResultComponent';
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    --main-font-family: 'Oxygen', sans-serif;
+    --main-font-weight: 400;
+  }
+  
   body {
-    font-family: 'Oxygen', sans-serif;
-    font-weight: 400;
+    font-family: var(--main-font-family);
+    font-weight: var(--main-font-weight);
   }
 `;
 
@@ -25,7 +32,7 @@ const Header = styled.header`
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  height: 40px;
+  height: 45px;
 `;
 
 const NavItem = styled(Link)`
@@ -41,6 +48,12 @@ const NavItem = styled(Link)`
 
 const Container = styled.div`
   text-align: center;
+`;
+
+const Navigation = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 function App() {
@@ -72,7 +85,7 @@ function App() {
         <GlobalStyle />
         <Container className="App">
           <Header className="App-header">
-            <nav>
+            <Navigation>
               <NavItem to="/">Home</NavItem>
               {currentUser ? (
                 <>
@@ -87,10 +100,12 @@ function App() {
                   <NavItem to="/login">Login</NavItem>
                 </>
               )}
-            </nav>
+              <SearchBar />
+            </Navigation>
           </Header>
           <Routes>
             <Route path="/" element={<SampleUserComponent />} />
+            <Route path="/search" element={<SearchResultComponent />} />
             <Route
               path="/register"
               element={

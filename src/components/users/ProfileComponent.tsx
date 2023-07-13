@@ -57,9 +57,9 @@ const FieldName = styled.span`
 `;
 
 const Button = styled.button`
-  background-color: #4caf50; /* Green */
+  background-color: #ddd;
   border: none;
-  color: white;
+  color: gray;
   text-align: center;
   display: inline-block;
   font-size: 16px;
@@ -70,7 +70,7 @@ const Button = styled.button`
   transition: 0.3s;
 
   &:hover {
-    background-color: #45a049;
+    background-color: #add8e6;
   }
 `;
 
