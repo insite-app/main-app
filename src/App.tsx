@@ -11,6 +11,7 @@ import { getCurrentUser, logout } from './providers/AuthProvider';
 import { UserContext } from './contexts/UserContext';
 import SearchBar from './components/utils/SearchBar';
 import SearchResultComponent from './components/search/SearchResultComponent';
+import ProfilePicture from './components/users/ProfilePicture';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -56,6 +57,13 @@ const Navigation = styled.nav`
   align-items: center;
 `;
 
+const ProfileLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+`;
+
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -89,7 +97,6 @@ function App() {
               <NavItem to="/">Home</NavItem>
               {currentUser ? (
                 <>
-                  <NavItem to={`/users/${currentUser.username}`}>Profile</NavItem>
                   <NavItem to="/" onClick={handleLogout}>
                     Logout
                   </NavItem>
@@ -101,6 +108,14 @@ function App() {
                 </>
               )}
               <SearchBar />
+              <div style={{ width: '50px' }}></div>
+              {currentUser ? (
+                <ProfileLink to={`/users/${currentUser.username}`}>
+                  <ProfilePicture username={currentUser.username} />
+                </ProfileLink>
+              ) : (
+                <div style={{ width: '20px' }}></div>
+              )}
             </Navigation>
           </Header>
           <Routes>

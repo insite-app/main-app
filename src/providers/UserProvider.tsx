@@ -44,3 +44,15 @@ export async function saveProfile(username: string, profile: unknown) {
     throw error;
   }
 }
+
+export async function getAvatarUrl(username: string) {
+  try {
+    const response = await api.get(`/users/${username}/avatar`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      throw new Error('User not found');
+    }
+    throw error;
+  }
+}
