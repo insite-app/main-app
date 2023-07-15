@@ -10,7 +10,7 @@ describe('ProfilePicture', () => {
 
     jest.spyOn(userProvider, 'getAvatarUrl').mockReturnValue(avatarUrlPromise);
 
-    const { container, getByAltText } = render(<ProfilePicture username={username} />);
+    const { getByAltText } = render(<ProfilePicture username={username} />);
 
     expect(userProvider.getAvatarUrl).toHaveBeenCalledWith(username);
     expect(userProvider.getAvatarUrl).toReturnWith(avatarUrlPromise);
