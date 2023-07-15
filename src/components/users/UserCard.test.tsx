@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import UserCard from './UserCard';
+
+jest.mock('./ProfilePicture', () => () => 'Mock Profile Picture');
 
 describe('UserCard', () => {
   const user = {
@@ -9,6 +11,7 @@ describe('UserCard', () => {
     name: 'Test Name',
     organization_name: 'Test Organization',
     bio: 'Test Bio',
+    avatar: 'test_avatar',
   };
 
   it('renders the correct user information', () => {
@@ -32,5 +35,14 @@ describe('UserCard', () => {
 
     const linkElement = getByText('Test Name');
     expect(linkElement.getAttribute('href')).toBe('/users/testUsername');
+  });
+
+  it('renders an image', () => {
+    render(
+      <Router>
+        <UserCard user={user} />
+      </Router>,
+    );
+    expect(screen.getByText('Mock Profile Picture')).toBeInTheDocument();
   });
 });
