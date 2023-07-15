@@ -49,7 +49,7 @@ const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 20px; /* Spacing between the ProfilePicture and UserInfo */
+  margin-left: 20px;
   align-items: flex-start;
 `;
 
