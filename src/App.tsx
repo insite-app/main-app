@@ -34,7 +34,7 @@ const Header = styled.header`
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  height: 45px;
+  height: 10%;
 `;
 
 const NavItem = styled(Link)`
@@ -67,6 +67,7 @@ const ProfileLink = styled(Link)`
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [avatarKey, setAvatarKey] = useState(null);
 
   useEffect(() => {
     async function fetchUser() {
@@ -84,7 +85,14 @@ function App() {
   };
 
   return (
-    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+    <UserContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        avatarKey,
+        refreshAvatar: () => setAvatarKey(Date.now()),
+      }}
+    >
       <Router>
         <GlobalStyle />
         <Container className="App">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/macro';
-import { getProfile, saveProfile } from 'src/providers/UserProvider';
+import { getProfile, saveProfile, uploadAvatar, getAvatarUrl } from 'src/providers/UserProvider';
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'src/contexts/UserContext';
 import ProfilePicture from './ProfilePicture';
@@ -88,7 +88,9 @@ const EditProfileComponent = () => {
     bio: '',
   });
   const [editing, setEditing] = useState(false);
-  const [, setError] = useState(null);
+  const { refreshAvatar } = useContext(UserContext);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [error, setError] = useState(null);
   const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -112,6 +114,22 @@ const EditProfileComponent = () => {
     });
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      try {
+        await uploadAvatar(username, selectedFile);
+        setSelectedFile(null);
+        refreshAvatar();
+      } catch (error) {}
+    }
+  };
+
   const handleEdit = () => {
     setEditing(!editing);
   };
@@ -133,6 +151,15 @@ const EditProfileComponent = () => {
       >
         Go back
       </Link>
+      <div>
+        <ProfilePicture size={'100px'} username={username} />
+        {editing && (
+          <>
+            <input type="file" onChange={handleFileChange} />
+            <button onClick={handleUpload}>Upload</button>
+          </>
+        )}
+      </div>
       <DefaultTableComponent
         data={[
           [
@@ -190,14 +217,20 @@ const EditProfileComponent = () => {
           [
             <FieldName>Bio</FieldName>,
             editing ? (
-              <StyledTextarea name="bio" value={profile.bio} onChange={handleInputChange} />
+              <StyledTextarea
+                name="bio"
+                value={profile.bio}
+                onChange={handleInputChange}
+                maxLength={400}
+              />
             ) : (
-              <div style={{ whiteSpace: 'pre-line' }}>{profile.bio}</div>
+              <div style={{ whiteSpace: 'pre-line', maxHeight: '300px' }}>{profile.bio}</div>
             ),
           ],
         ]}
         columnWidths={['150px', '300px']}
       />
+      {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
       {currentUser && currentUser.username === username ? (
         editing ? (
           <Button onClick={handleSave}>Save</Button>

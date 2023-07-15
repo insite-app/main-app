@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/macro';
-import { getProfile, saveProfile } from 'src/providers/UserProvider';
+import { getProfile } from 'src/providers/UserProvider';
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'src/contexts/UserContext';
 import ProfilePicture from './ProfilePicture';
@@ -10,7 +10,7 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 80px;
-  max-width: 850px;
+  max-width: 65%;
   margin-top: 30px;
   padding: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
