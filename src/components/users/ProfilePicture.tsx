@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { getAvatarUrl } from 'src/providers/UserProvider';
+import { UserContext } from 'src/contexts/UserContext';
 
 interface AvatarProps {
   size?: string;
@@ -22,6 +23,7 @@ interface ProfilePictureProps {
 
 const ProfilePicture = ({ username, size }: ProfilePictureProps) => {
   const [imgSrc, setImgSrc] = useState(null);
+  const { avatarKey } = useContext(UserContext);
 
   useEffect(() => {
     const getAvatar = async () => {
@@ -29,7 +31,7 @@ const ProfilePicture = ({ username, size }: ProfilePictureProps) => {
       setImgSrc(url);
     };
     getAvatar();
-  }, [username]);
+  }, [username, avatarKey]);
 
   return (
     <div className="profile-picture" aria-label="Profile">
