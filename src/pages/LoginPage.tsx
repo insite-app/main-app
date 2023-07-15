@@ -17,21 +17,21 @@ const LoginPageHeading = styled.h1`
   margin-bottom: 20px;
 `;
 
-const LoginPage: React.FC = () => {
-  const StyledLoginForm = styled(LoginForm)`
-    margin-top: 20px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: left;
-  `;
+const StyledLoginForm = styled(LoginForm)`
+  margin-top: 20px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: left;
+`;
 
+function LoginPage() {
   return (
-    <LoginPageContainer>
+    <LoginPageContainer aria-label="login-form">
       <LoginPageHeading>Log In</LoginPageHeading>
       <StyledLoginForm />
     </LoginPageContainer>
   );
-};
+}
 
 export default LoginPage;

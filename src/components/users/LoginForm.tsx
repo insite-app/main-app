@@ -57,9 +57,7 @@ const LoginForm: FC = () => {
       setCurrentUser(user);
       setUsername('');
       setPassword('');
-    } catch (error) {
-      console.error('Login failed', error);
-    }
+    } catch (error) {}
   };
 
   return (

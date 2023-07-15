@@ -87,9 +87,6 @@ const ProfileComponent = () => {
   const [error, setError] = useState(null);
   const { currentUser } = useContext(UserContext);
 
-  console.log(username);
-  console.log(currentUser);
-
   useEffect(() => {
     getProfile(username)
       .then((data) => {

@@ -71,13 +71,8 @@ function App() {
     async function fetchUser() {
       try {
         const response = await getCurrentUser();
-
-        console.log(response);
-
         setCurrentUser(response.data);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     }
     fetchUser();
   }, []);

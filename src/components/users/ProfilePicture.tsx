@@ -2,16 +2,25 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getAvatarUrl } from 'src/providers/UserProvider';
 
-const AvatarImage = styled.img`
+interface AvatarProps {
+  size?: string;
+}
+
+const AvatarImage = styled.img<AvatarProps>`
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: ${(props) => props.size || '35px'};
+  height: ${(props) => props.size || '35px'};
   object-fit: cover;
   border: 1px solid #3e3e3e;
   margin-top: 4px;
 `;
 
-const ProfilePicture = ({ username }) => {
+interface ProfilePictureProps {
+  username: string;
+  size?: string;
+}
+
+const ProfilePicture = ({ username, size }: ProfilePictureProps) => {
   const [imgSrc, setImgSrc] = useState(null);
 
   useEffect(() => {
@@ -23,8 +32,8 @@ const ProfilePicture = ({ username }) => {
   }, [username]);
 
   return (
-    <div className="profile-picture">
-      {imgSrc && <AvatarImage src={imgSrc} alt="Profile avatar" />}
+    <div className="profile-picture" aria-label="Profile">
+      {imgSrc && <AvatarImage size={size} src={imgSrc} alt="Profile avatar" />}
     </div>
   );
 };
