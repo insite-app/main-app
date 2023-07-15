@@ -12,6 +12,7 @@ import { UserContext } from './contexts/UserContext';
 import SearchBar from './components/utils/SearchBar';
 import SearchResultComponent from './components/search/SearchResultComponent';
 import ProfilePicture from './components/users/ProfilePicture';
+import EditProfileComponent from './components/users/EditProfileComponent';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -130,6 +131,7 @@ function App() {
             />
             <Route path="*" element={<NoMatch />} />
             <Route path="users/:username" element={<ProfileComponent />} />
+            <Route path="users/:username/edit" element={<EditProfileComponent />} />
           </Routes>
         </Container>
       </Router>

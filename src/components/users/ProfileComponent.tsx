@@ -1,77 +1,76 @@
 import React, { useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { getProfile, saveProfile } from 'src/providers/UserProvider';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'src/contexts/UserContext';
-import DefaultTableComponent from '../utils/DefaultTableComponent';
+import ProfilePicture from './ProfilePicture';
 
 const ProfileContainer = styled.div`
+  background: #f1e6ff;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-  max-width: 500px;
+  margin-left: 80px;
+  max-width: 850px;
+  margin-top: 30px;
   padding: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
+  justify-content: flex-start;
 `;
 
-const StyledInput = styled.input`
-  border: 1px solid #ddd;
-  padding: 5px;
-  border-radius: 0px;
-  font-size: 1em;
+const HeaderInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: middle;
+  margin-left: 25px;
+  align-items: flex-start;
+`;
+
+const OrganizationName = styled.p`
+  margin: 10px 0;
+  color: #666;
+  font-size: 20px;
+`;
+
+const Name = styled.p`
+  margin: 0px;
+  margin-top: 5px;
   color: #333;
-  transition: border-color 0.3s;
-  width: 250px;
-  height: 15px;
-
-  &:focus {
-    outline: none;
-    border-color: #3f51b5;
-  }
-  font-family: 'Oxygen', sans-serif;
-`;
-
-const StyledTextarea = styled.textarea`
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 1em;
-  color: #333;
-  transition: border-color 0.3s;
-  resize: vertical; // Allows vertical resize only
-  height: 150px;
-  width: 300px;
-
-  &:focus {
-    outline: none;
-    border-color: #3f51b5;
-  }
-  font-family: 'Oxygen', sans-serif;
-`;
-
-const FieldName = styled.span`
+  font-size: 36px;
   font-weight: bold;
-  font-size: 1.25em;
 `;
 
-const Button = styled.button`
-  background-color: #ddd;
-  border: none;
-  color: gray;
-  text-align: center;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 12px;
-  padding: 10px 24px;
-  transition: 0.3s;
+const ProfileHeader = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
 
-  &:hover {
-    background-color: #add8e6;
-  }
+const PersonalInfo = styled.div`
+  margin-top: auto;
+  font-size: 14px;
+  text-align: right;
+  margin-left: auto;
+`;
+
+const BioHeader = styled.h3`
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  margin-top: 15px;
+`;
+
+const Bio = styled.p`
+  text-align: left;
+  margin: 0;
+  padding-top: 5px;
+  white-space: pre-line;
+  font-size: 14px;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: blue;
 `;
 
 const ProfileComponent = () => {
@@ -83,8 +82,6 @@ const ProfileComponent = () => {
     phone: '',
     bio: '',
   });
-  const [editing, setEditing] = useState(false);
-  const [error, setError] = useState(null);
   const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -101,101 +98,24 @@ const ProfileComponent = () => {
       .catch((error) => console.error(`Error: ${error}`));
   }, [username]);
 
-  const handleInputChange = (event) => {
-    setProfile({
-      ...profile,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleEdit = () => {
-    setEditing(!editing);
-  };
-
-  const handleSave = async () => {
-    try {
-      await saveProfile(username, profile);
-      setEditing(false);
-      setError(null);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
   return (
     <ProfileContainer>
-      <DefaultTableComponent
-        data={[
-          [
-            <FieldName>Name</FieldName>,
-            editing ? (
-              <StyledInput
-                type="text"
-                name="name"
-                value={profile.name}
-                onChange={handleInputChange}
-              />
-            ) : (
-              profile.name
-            ),
-          ],
-          [
-            <FieldName>Organization</FieldName>,
-            editing ? (
-              <StyledInput
-                type="text"
-                name="organization_name"
-                value={profile.organization_name}
-                onChange={handleInputChange}
-              />
-            ) : (
-              profile.organization_name
-            ),
-          ],
-          [
-            <FieldName>Email</FieldName>,
-            editing ? (
-              <StyledInput
-                type="text"
-                name="email"
-                value={profile.email}
-                onChange={handleInputChange}
-              />
-            ) : (
-              profile.email
-            ),
-          ],
-          [
-            <FieldName>Phone</FieldName>,
-            editing ? (
-              <StyledInput
-                type="text"
-                name="phone"
-                value={profile.phone}
-                onChange={handleInputChange}
-              />
-            ) : (
-              profile.phone
-            ),
-          ],
-          [
-            <FieldName>Bio</FieldName>,
-            editing ? (
-              <StyledTextarea name="bio" value={profile.bio} onChange={handleInputChange} />
-            ) : (
-              <div style={{ whiteSpace: 'pre-line' }}>{profile.bio}</div>
-            ),
-          ],
-        ]}
-        columnWidths={['150px', '300px']}
-      />
-      {currentUser && currentUser.username === username ? (
-        editing ? (
-          <Button onClick={handleSave}>Save</Button>
-        ) : (
-          <Button onClick={handleEdit}>Edit</Button>
-        )
-      ) : null}
+      <ProfileHeader>
+        <ProfilePicture username={username} size={'100px'} />
+        <HeaderInfo>
+          <Name>{profile.name}</Name>
+          <OrganizationName>{profile.organization_name}</OrganizationName>
+        </HeaderInfo>
+        <PersonalInfo>
+          {currentUser && currentUser.username === username ? (
+            <StyledLink to={`/users/${username}/edit`}>Edit Profile</StyledLink>
+          ) : null}
+          <div style={{ marginBottom: '3px', marginTop: '15px' }}>{profile.email}</div>
+          <div>{profile.phone}</div>
+        </PersonalInfo>
+      </ProfileHeader>
+      <BioHeader>About me</BioHeader>
+      <Bio>{profile.bio}</Bio>
     </ProfileContainer>
   );
 };
