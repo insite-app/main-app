@@ -17,17 +17,17 @@ const RegisterPageHeading = styled.h1`
   margin-bottom: 20px;
 `;
 
-function RegisterPage() {
-  const StyledRegisterStudentForm = styled(RegisterStudentForm)`
-    margin-top: 20px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: left;
-  `;
+const StyledRegisterStudentForm = styled(RegisterStudentForm)`
+  margin-top: 20px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: left;
+`;
 
+function RegisterPage() {
   return (
-    <RegisterPageContainer>
+    <RegisterPageContainer aria-label="register-form">
       <RegisterPageHeading>Sign Up</RegisterPageHeading>
       <StyledRegisterStudentForm />
     </RegisterPageContainer>
