@@ -7,7 +7,7 @@ jest.mock('./ProfilePicture', () => () => 'Mock Profile Picture');
 
 describe('UserCard', () => {
   const user = {
-    userAuth: { username: 'testUsername' },
+    username: 'testUsername',
     name: 'Test Name',
     organization_name: 'Test Organization',
     bio: 'Test Bio',

@@ -54,6 +54,7 @@ const LoginForm: FC = () => {
 
     try {
       const user = await login(username, password);
+      console.log('user', user);
       setCurrentUser(user);
       setUsername('');
       setPassword('');

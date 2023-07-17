@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { UserContext } from 'src/contexts/UserContext';
 import * as UserProvider from 'src/providers/UserProvider';
 import ProfileComponent from './ProfileComponent';
@@ -27,13 +27,11 @@ describe('ProfileComponent', () => {
 
   it('renders profile correctly', async () => {
     render(
-      <UserContext.Provider value={{ currentUser }}>
-        <MemoryRouter initialEntries={['/users/test']}>
-          <Routes>
-            <Route path="/users/:username" element={<ProfileComponent />} />
-          </Routes>
-        </MemoryRouter>
-      </UserContext.Provider>,
+      <Router>
+        <UserContext.Provider value={{ currentUser }}>
+          <ProfileComponent username={testUser.username} />
+        </UserContext.Provider>
+      </Router>,
     );
 
     // Assertions

@@ -6,13 +6,14 @@ import styled from 'styled-components';
 import RegisterPage from './pages/RegisterPage';
 import { createGlobalStyle } from 'styled-components';
 import LoginPage from './pages/LoginPage';
-import ProfileComponent from './components/users/ProfileComponent';
 import { getCurrentUser, logout } from './providers/AuthProvider';
 import { UserContext } from './contexts/UserContext';
 import SearchBar from './components/utils/SearchBar';
 import SearchResultComponent from './components/search/SearchResultComponent';
 import ProfilePicture from './components/users/ProfilePicture';
 import EditProfileComponent from './components/users/EditProfileComponent';
+import ProfilePage from './pages/ProfilePage';
+import RequestsComponent from './components/connections/RequestsComponent';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -138,8 +139,9 @@ function App() {
               }
             />
             <Route path="*" element={<NoMatch />} />
-            <Route path="users/:username" element={<ProfileComponent />} />
+            <Route path="users/:username" element={<ProfilePage />} />
             <Route path="users/:username/edit" element={<EditProfileComponent />} />
+            <Route path="requests" element={<RequestsComponent />} />
           </Routes>
         </Container>
       </Router>

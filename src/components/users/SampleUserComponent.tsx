@@ -31,7 +31,7 @@ export function SampleUserComponent() {
     <div>
       {data.map((user) => (
         <p key={user.id}>
-          {user.userAuth.username} - {user.email}
+          {user.username} - {user.email}
         </p>
       ))}
     </div>
