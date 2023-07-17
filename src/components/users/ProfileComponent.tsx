@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/macro';
 import { getProfile } from 'src/providers/UserProvider';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { UserContext } from 'src/contexts/UserContext';
 import ProfilePicture from './ProfilePicture';
+import { checkIfRequestExists } from 'src/providers/ConnectionsProvider';
+import SendRequestButton from '../connections/SendRequestButton';
 
 const ProfileContainer = styled.div`
   background: #f1e6ff;
@@ -71,10 +73,20 @@ const Bio = styled.p`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: blue;
+  font-size: 16px;
 `;
 
-const ProfileComponent = () => {
-  const { username } = useParams();
+const PendingText = styled.p`
+  color: #bf520d;
+  margin: 0;
+  font-size: 16px;
+`;
+
+interface ProfileComponentProps {
+  username: string;
+}
+
+const ProfileComponent = ({ username }: ProfileComponentProps) => {
   const [profile, setProfile] = useState({
     organization_name: '',
     name: '',
@@ -83,6 +95,7 @@ const ProfileComponent = () => {
     bio: '',
   });
   const { currentUser } = useContext(UserContext);
+  const [requestExists, setRequestExists] = useState(false);
 
   useEffect(() => {
     getProfile(username)
@@ -98,6 +111,14 @@ const ProfileComponent = () => {
       .catch((error) => console.error(`Error: ${error}`));
   }, [username]);
 
+  useEffect(() => {
+    if (currentUser) {
+      checkIfRequestExists(currentUser.id, username).then((exists) => {
+        setRequestExists(exists);
+      });
+    }
+  }, [currentUser, username]);
+
   return (
     <ProfileContainer>
       <ProfileHeader>
@@ -107,6 +128,15 @@ const ProfileComponent = () => {
           <OrganizationName>{profile.organization_name}</OrganizationName>
         </HeaderInfo>
         <PersonalInfo>
+          {currentUser && currentUser.username !== username && (
+            <div>
+              {requestExists ? (
+                <PendingText>Request Pending</PendingText>
+              ) : (
+                <SendRequestButton senderId={currentUser.id} receiverUsername={username} />
+              )}
+            </div>
+          )}
           {currentUser && currentUser.username === username ? (
             <StyledLink to={`/users/${username}/edit`}>Edit Profile</StyledLink>
           ) : null}

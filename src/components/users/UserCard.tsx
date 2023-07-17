@@ -57,11 +57,11 @@ const UserCard = ({ user }) => {
   return (
     <UserCardContainer>
       <UserCardHeader>
-        <Link to={`/users/${user.userAuth.username}`}>
-          <ProfilePicture username={user.userAuth.username} size={'50px'} />
+        <Link to={`/users/${user.username}`}>
+          <ProfilePicture username={user.username} size={'50px'} />
         </Link>
         <UserInfo>
-          <StyledLink to={`/users/${user.userAuth.username}`}>{user.name}</StyledLink>
+          <StyledLink to={`/users/${user.username}`}>{user.name}</StyledLink>
           <OrganizationName>{user.organization_name}</OrganizationName>
           <UserBio>{user.bio}</UserBio>
         </UserInfo>

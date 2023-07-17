@@ -81,6 +81,7 @@ const FieldName = styled.span`
 const EditProfileComponent = () => {
   const { username } = useParams();
   const [profile, setProfile] = useState({
+    username: '',
     organization_name: '',
     name: '',
     email: '',
@@ -97,6 +98,7 @@ const EditProfileComponent = () => {
     getProfile(username)
       .then((data) => {
         setProfile({
+          username: data.username || '',
           organization_name: data.organization_name || '',
           name: data.name || '',
           email: data.email || '',

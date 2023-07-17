@@ -18,6 +18,7 @@ const SearchResultComponent = () => {
     async function fetchResults() {
       if (searchTerm) {
         const results = await search(searchTerm);
+        console.log(results);
         setResults(results);
       }
     }

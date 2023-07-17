@@ -71,7 +71,7 @@ describe('ProfileComponent', () => {
     // Assertions
     await waitFor(() => {
       expect(saveProfile).toHaveBeenCalledWith('test', {
-        ...testUserWithoutUsername,
+        ...testUser,
         organization_name: 'New Organization',
         name: 'New User',
       });
