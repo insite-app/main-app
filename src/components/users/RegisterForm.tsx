@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { register } from 'src/providers/AuthProvider';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const StyledForm = styled.form`
   display: flex;

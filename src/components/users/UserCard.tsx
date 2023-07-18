@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import ProfilePicture from './ProfilePicture';
 
 const OrganizationName = styled.p`
@@ -53,9 +53,14 @@ const UserInfo = styled.div`
   align-items: flex-start;
 `;
 
-const UserCard = ({ user }) => {
+interface UserCardProps {
+  user: any;
+  style?: React.CSSProperties;
+}
+
+const UserCard = ({ user, style }: UserCardProps) => {
   return (
-    <UserCardContainer>
+    <UserCardContainer style={style}>
       <UserCardHeader>
         <Link to={`/users/${user.username}`}>
           <ProfilePicture username={user.username} size={'50px'} />

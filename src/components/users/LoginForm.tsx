@@ -1,7 +1,7 @@
 import React, { FC, useContext, useState } from 'react';
 import { UserContext } from 'src/contexts/UserContext';
 import { login } from 'src/providers/AuthProvider';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const StyledForm = styled.form`
   display: flex;

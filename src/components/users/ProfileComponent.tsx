@@ -4,8 +4,11 @@ import { getProfile } from 'src/providers/UserProvider';
 import { Link } from 'react-router-dom';
 import { UserContext } from 'src/contexts/UserContext';
 import ProfilePicture from './ProfilePicture';
-import { checkIfRequestExists } from 'src/providers/ConnectionsProvider';
+import { getRequestId, checkIfConnectionExists } from 'src/providers/ConnectionsProvider';
 import SendRequestButton from '../connections/SendRequestButton';
+import RemoveConnectionButton from '../connections/RemoveConnectionButton';
+import RejectRequestButton from '../connections/RejectRequestButton';
+import AcceptRequestButton from '../connections/AcceptRequestButton';
 
 const ProfileContainer = styled.div`
   background: #f1e6ff;
@@ -82,12 +85,26 @@ const PendingText = styled.p`
   font-size: 16px;
 `;
 
+const ConnectionStatus = styled.p`
+  color: green;
+  font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: fit-content;
+`;
+
 interface ProfileComponentProps {
   username: string;
 }
 
 const ProfileComponent = ({ username }: ProfileComponentProps) => {
   const [profile, setProfile] = useState({
+    id: '',
     organization_name: '',
     name: '',
     email: '',
@@ -95,12 +112,16 @@ const ProfileComponent = ({ username }: ProfileComponentProps) => {
     bio: '',
   });
   const { currentUser } = useContext(UserContext);
-  const [requestExists, setRequestExists] = useState(false);
+  const [outgoingRequestExists, setOutgoingRequestExists] = useState(false);
+  const [incomingRequestExists, setIncomingRequestExists] = useState(false);
+  const [connectionExists, setConnectionExists] = useState(false);
+  const [requestId, setRequestId] = useState('');
 
   useEffect(() => {
     getProfile(username)
       .then((data) => {
         setProfile({
+          id: data.id || '',
           organization_name: data.organization_name || '',
           name: data.name || '',
           email: data.email || '',
@@ -111,13 +132,41 @@ const ProfileComponent = ({ username }: ProfileComponentProps) => {
       .catch((error) => console.error(`Error: ${error}`));
   }, [username]);
 
-  useEffect(() => {
-    if (currentUser) {
-      checkIfRequestExists(currentUser.id, username).then((exists) => {
-        setRequestExists(exists);
-      });
+  const fetchAndUpdateStatus = async () => {
+    if (currentUser?.username !== username) {
+      const outgoingId = await getRequestId(currentUser.id, profile.id);
+      setOutgoingRequestExists(outgoingId !== '');
+      if (outgoingId) {
+        setRequestId(outgoingId);
+        return;
+      }
+      const incomingId = await getRequestId(profile.id, currentUser.id);
+      setIncomingRequestExists(incomingId !== '');
+      if (incomingId) {
+        setRequestId(incomingId);
+        return;
+      }
+      const exists = await checkIfConnectionExists(currentUser.id, profile.id);
+      setConnectionExists(exists);
     }
-  }, [currentUser, username]);
+  };
+
+  useEffect(() => {
+    if (profile.id) {
+      fetchAndUpdateStatus();
+    }
+  }, [currentUser, username, profile.id]);
+
+  /** Add later
+   * {connectionExists ? (
+            <RemoveConnectionButton
+              user1Id={currentUser.id}
+              user2Id={profile.id}
+              afterConnectionRemoved={fetchAndUpdateStatus}
+              style={{ marginTop: '15px' }}
+            />
+          ) : null}
+   */
 
   return (
     <ProfileContainer>
@@ -130,10 +179,31 @@ const ProfileComponent = ({ username }: ProfileComponentProps) => {
         <PersonalInfo>
           {currentUser && currentUser.username !== username && (
             <div>
-              {requestExists ? (
+              {outgoingRequestExists ? (
                 <PendingText>Request Pending</PendingText>
+              ) : incomingRequestExists ? (
+                <div>
+                  <PendingText>Request Pending</PendingText>
+                  <ButtonContainer>
+                    <AcceptRequestButton
+                      requestId={requestId}
+                      afterRequestAccepted={fetchAndUpdateStatus}
+                      style={{ marginRight: '5px' }}
+                    />
+                    <RejectRequestButton
+                      requestId={requestId}
+                      afterRequestRejected={fetchAndUpdateStatus}
+                    />
+                  </ButtonContainer>
+                </div>
+              ) : connectionExists ? (
+                <ConnectionStatus>Connected</ConnectionStatus>
               ) : (
-                <SendRequestButton senderId={currentUser.id} receiverUsername={username} />
+                <SendRequestButton
+                  senderId={currentUser.id}
+                  receiverId={profile.id}
+                  afterRequestSent={fetchAndUpdateStatus}
+                />
               )}
             </div>
           )}

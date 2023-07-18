@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import SendRequestButton from 'src/components/connections/SendRequestButton';
 import ProfileComponent from 'src/components/users/ProfileComponent';
 import { UserContext } from 'src/contexts/UserContext';

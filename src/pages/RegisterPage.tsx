@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import RegisterStudentForm from '../components/users/RegisterForm';
 
 const RegisterPageContainer = styled.div`

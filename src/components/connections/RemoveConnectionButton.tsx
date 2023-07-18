@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { sendRequest } from 'src/providers/ConnectionsProvider';
+import { removeConnection } from 'src/providers/ConnectionsProvider';
 
-interface SendRequestButtonProps {
-  senderId: string;
-  receiverId: string;
-  afterRequestSent?: () => void;
+interface RemoveConnectionButtonProps {
+  user1Id: string;
+  user2Id: string;
+  afterConnectionRemoved?: () => void;
   style?: React.CSSProperties;
 }
 
 const StyledButton = styled.button`
-  background-color: #c0e4fc;
+  background-color: #fc6666;
   color: black;
   padding: 4px 8px;
   border: 1px solid darkgray;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-family: 'Oxygen', sans-serif;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #94bbff;
+    background-color: #ff9494;
     color: darkgray;
   }
 
@@ -36,12 +36,12 @@ const ErrorText = styled.div`
   margin-top: 10px;
 `;
 
-const SendRequestButton = ({
-  senderId,
-  receiverId,
-  afterRequestSent,
+const RemoveConnectionButton = ({
+  user1Id,
+  user2Id,
+  afterConnectionRemoved,
   style,
-}: SendRequestButtonProps) => {
+}: RemoveConnectionButtonProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,9 +49,9 @@ const SendRequestButton = ({
     setLoading(true);
     setError(null);
     try {
-      await sendRequest(senderId, receiverId);
-      if (afterRequestSent) {
-        afterRequestSent();
+      await removeConnection(user1Id, user2Id);
+      if (afterConnectionRemoved) {
+        afterConnectionRemoved();
       }
     } catch (error) {
       setError(error.message);
@@ -63,11 +63,11 @@ const SendRequestButton = ({
   return (
     <div style={style}>
       <StyledButton onClick={handleClick} disabled={loading}>
-        Send Request
+        Remove Connection
       </StyledButton>
       {error && <ErrorText>Error: {error}</ErrorText>}
     </div>
   );
 };
 
-export default SendRequestButton;
+export default RemoveConnectionButton;

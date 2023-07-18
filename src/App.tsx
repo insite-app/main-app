@@ -14,6 +14,7 @@ import ProfilePicture from './components/users/ProfilePicture';
 import EditProfileComponent from './components/users/EditProfileComponent';
 import ProfilePage from './pages/ProfilePage';
 import RequestsComponent from './components/connections/RequestsComponent';
+import ConnectionsComponent from './components/connections/ConnectionsComponent';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -142,6 +143,7 @@ function App() {
             <Route path="users/:username" element={<ProfilePage />} />
             <Route path="users/:username/edit" element={<EditProfileComponent />} />
             <Route path="requests" element={<RequestsComponent />} />
+            <Route path="connections" element={<ConnectionsComponent />} />
           </Routes>
         </Container>
       </Router>

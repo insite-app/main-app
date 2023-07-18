@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { sendRequest } from 'src/providers/ConnectionsProvider';
+import { rejectRequest } from 'src/providers/ConnectionsProvider';
 
-interface SendRequestButtonProps {
-  senderId: string;
-  receiverId: string;
-  afterRequestSent?: () => void;
+interface RejectRequestButtonProps {
+  requestId: string;
+  afterRequestRejected?: () => void;
   style?: React.CSSProperties;
 }
 
 const StyledButton = styled.button`
-  background-color: #c0e4fc;
+  background-color: #fc6666;
   color: black;
   padding: 4px 8px;
   border: 1px solid darkgray;
@@ -21,7 +20,7 @@ const StyledButton = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #94bbff;
+    background-color: #ff9494;
     color: darkgray;
   }
 
@@ -36,12 +35,11 @@ const ErrorText = styled.div`
   margin-top: 10px;
 `;
 
-const SendRequestButton = ({
-  senderId,
-  receiverId,
-  afterRequestSent,
+const RejectRequestButton = ({
+  requestId,
+  afterRequestRejected,
   style,
-}: SendRequestButtonProps) => {
+}: RejectRequestButtonProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,9 +47,9 @@ const SendRequestButton = ({
     setLoading(true);
     setError(null);
     try {
-      await sendRequest(senderId, receiverId);
-      if (afterRequestSent) {
-        afterRequestSent();
+      await rejectRequest(requestId);
+      if (afterRequestRejected) {
+        afterRequestRejected();
       }
     } catch (error) {
       setError(error.message);
@@ -63,11 +61,11 @@ const SendRequestButton = ({
   return (
     <div style={style}>
       <StyledButton onClick={handleClick} disabled={loading}>
-        Send Request
+        Reject
       </StyledButton>
       {error && <ErrorText>Error: {error}</ErrorText>}
     </div>
   );
 };
 
-export default SendRequestButton;
+export default RejectRequestButton;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { getAvatarUrl } from 'src/providers/UserProvider';
 import { UserContext } from 'src/contexts/UserContext';
 

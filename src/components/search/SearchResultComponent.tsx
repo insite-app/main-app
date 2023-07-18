@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { search } from 'src/providers/SearchProvider';
 import UserCard from 'src/components/users/UserCard';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const ResultContainer = styled.div`
   max-width: 800px;
